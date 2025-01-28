@@ -1,0 +1,14 @@
+{
+  "name": "Bryan Fildy",
+  "short_name": "Bryan",
+  "icons": [
+    {
+      "src": "img/logo-bry(favicon)",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#0054c9",
+  "background_color": "#ffffff",
+  "display": "standalone"
+}
