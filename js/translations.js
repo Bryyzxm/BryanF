@@ -5,6 +5,7 @@ const translations = {
     about: 'About Me',
     projects: 'My Projects',
     contact: 'Contact',
+    blog: 'Blog',
     language: 'Language',
 
     // Hero Section

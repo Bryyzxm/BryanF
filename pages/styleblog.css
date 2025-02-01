@@ -1,0 +1,188 @@
+:root {
+  --primary-color: #0054c9;
+  --secondary-color: #ffd401;
+  --dark-color: #010101;
+  --light-color: #f4f4f4;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+  background-color: var(--light-color);
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: #333;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  box-shadow: 0 0 0 0.5px var(--light-color) inset;
+  z-index: 999;
+  background: var(--primary-color) !important;
+  backdrop-filter: blur(10px);
+  font-family: 'Poppins', sans-serif;
+}
+
+.navbar span {
+  color: var(--secondary-color);
+  font-weight: 700;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+  color: var(--secondary-color) !important;
+  transform: scale(1.05);
+}
+
+.navbar-nav .nav-link {
+  color: var(--light-color) !important;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  width: fit-content;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.navbar img {
+  display: block;
+  margin-right: 10px;
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  color: var(--light-color) !important;
+  font-family: 'Poppins', sans-serif;
+}
+
+.dropdown-menu {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dropdown-item {
+  color: var(--light-color);
+}
+
+.dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--secondary-color);
+}
+
+/* From Uiverse.io by gharsh11032000 */
+.card-link {
+  text-decoration: none; /* Menghilangkan underline dari link */
+}
+
+.card {
+  width: 100%;
+  min-width: 280px;
+  max-width: 400px;
+  height: 450px !important; /* Menyesuaikan tinggi kartu dengan konten */
+  margin: 0 auto;
+  padding: 20px;
+  color: white;
+  background: transparent;
+  border: 2px solid #ff6b00;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transform-origin: center center;
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-sizing: border-box;
+}
+
+.card .main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.card .heading {
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1.2;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  text-align: left;
+}
+
+.card .footer {
+  font-weight: 400;
+  margin-right: 4px;
+}
+
+.card:hover {
+  border-radius: 12px;
+  background-color: #ffbb00;
+  scale: 0.95;
+  rotate: 4deg;
+  box-shadow: 0 0 0 0.5px var(--secondary-color) inset;
+}
+
+/* Blog section styles */
+.content-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.blog-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  padding: 2rem 0;
+}
+
+.card .card-img {
+  width: 100%; /* Menyesuaikan lebar gambar dengan lebar kartu */
+  height: 150px; /* Mengatur tinggi gambar untuk tampilan yang lebih proporsional */
+  object-fit: cover; /* Menjaga gambar tetap mengisi area gambar tanpa distorsi */
+  border-radius: 12px; /* Menjaga sudut gambar tetap melengkung */
+}
+
+/* Responsive breakpoints */
+@media (max-width: 1024px) {
+  .blog-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .blog-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    max-width: 320px;
+  }
+}
+
+/* tentang saya */
+/* #tentang {
+  position: relative;
+  padding-bottom: 100px;
+}
+
+@media (min-width: 992px) {
+  #tentang .content-container p {
+    padding: 0.5rem 10rem !important;
+  }
+} */
