@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Advanced Slideshow Editor</title>
+    <!-- Style Navbar dan lainnya dari halaman blog -->
+    <link
+      rel="stylesheet"
+      href="styleblog.css"
+    />
+    <link
+      rel="icon"
+      href="../img/logo-bry(favicon).png"
+      type="image/x-icon"
+    />
+    <!-- Bootstrap CSS & Font Awesome -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <!-- html2canvas & JSZip -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <style>
+      /* Reset dasar dan wrapper untuk sticky footer */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+      .wrapper {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      .main-content {
+        flex: 1;
+      }
+
+      /* Variabel Global */
+      :root {
+        --primary-color: #0054c9;
+        --secondary-color: #ffd401;
+        --dark-color: #010101;
+        --light-color: #f4f4f4;
+      }
+
+      body {
+        font-family: 'Poppins', sans-serif;
+        background: var(--light-color);
+        padding-bottom: 60px;
+      }
+
+      /* Keyframe Animations untuk Transisi */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes zoomIn {
+        from {
+          transform: scale(0.8);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      /* Editor Container */
+      #editorContainer {
+        position: relative;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        height: 600px;
+      }
+
+      /* Slide Editor Area */
+      #slideEditor {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: #e9ecef;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+      }
+      #slideEditor img.slide-bg {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        pointer-events: none;
+      }
+
+      /* Drag & Drop Upload Area */
+      #uploadZone {
+        border: 2px dashed var(--primary-color);
+        border-radius: 8px;
+        text-align: center;
+        padding: 40px;
+        color: var(--primary-color);
+        cursor: pointer;
+      }
+      #uploadZone.dragover {
+        background: rgba(0, 84, 201, 0.1);
+      }
+
+      /* Text Overlay (draggable & editable) */
+      .text-overlay {
+        position: absolute;
+        padding: 4px 8px;
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px dashed var(--primary-color);
+        border-radius: 4px;
+        cursor: move;
+        user-select: none;
+      }
+      .text-overlay.editing {
+        border: 1px solid var(--secondary-color);
+        background: #fff;
+      }
+      .text-overlay .delete-btn {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background: var(--secondary-color);
+        color: var(--dark-color);
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+        line-height: 20px;
+        text-align: center;
+        cursor: pointer;
+        display: none;
+      }
+      .text-overlay:hover .delete-btn {
+        display: block;
+      }
+
+      /* Tool Panel - tanpa fixed tinggi agar menyesuaikan konten */
+      #toolPanel {
+        padding: 10px;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        /* Hilangkan fixed height agar container menyesuaikan isinya */
+        /* height: 600px; */
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      #toolPanel button {
+        width: 100%;
+      }
+      /* Pengaturan Transisi */
+      #transitionSettings {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background: #fff;
+      }
+      #transitionSettings label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+      #transitionSettings select,
+      #transitionSettings input[type='range'] {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      /* Tata letak kolom: pada desktop, panel kontrol di samping editor */
+      @media (min-width: 768px) {
+        #mainContainer .row {
+          align-items: start;
+        }
+      }
+
+      /* Grid View Overlay */
+      #gridView {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.8);
+        overflow-y: auto;
+        display: none;
+        padding: 20px;
+        z-index: 10000;
+      }
+      #gridView.active {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+      }
+      .grid-thumb {
+        position: relative;
+        border: 2px solid transparent;
+        cursor: pointer;
+      }
+      .grid-thumb.active {
+        border-color: var(--secondary-color);
+      }
+      .grid-thumb img {
+        width: 100%;
+        display: block;
+        border-radius: 4px;
+      }
+
+      /* Fullscreen Mode */
+      .fullscreen {
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: var(--dark-color);
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+      }
+      .fullscreen #editorContainer {
+        flex: 1;
+        margin: 0;
+        border-radius: 0;
+      }
+      /* Fullscreen Overlay Buttons */
+      .fs-overlay-button {
+        position: absolute;
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        border: none;
+        padding: 10px 15px;
+        font-size: 18px;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      .fs-overlay-button:hover {
+        background: rgba(0, 0, 0, 0.7);
+      }
+      .fs-exit-button {
+        bottom: 20px;
+        left: 20px;
+      }
+      .fs-prev-button {
+        top: 50%;
+        left: 20px;
+        transform: translateY(-50%);
+      }
+      .fs-next-button {
+        top: 50%;
+        right: 20px;
+        transform: translateY(-50%);
+      }
+
+      /* Footer (tidak fixed, berada di bagian bawah wrapper) */
+      footer {
+        background: var(--primary-color);
+        color: #fff;
+        text-align: center;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar (struktur dan style diambil dari halaman blog) -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+      <div class="container">
+        <a
+          class="navbar-brand"
+          href="../index.html"
+        >
+          <span>Bryan</span> Fildy
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="collapse navbar-collapse"
+          id="navbarNavAltMarkup"
+        >
+          <div class="navbar-nav ms-auto gap-3">
+            <a
+              class="nav-link"
+              href="../index.html"
+              >Beranda</a
+            >
+            <a
+              class="nav-link"
+              href="tentang.html"
+              >Tentang Saya</a
+            >
+            <a
+              class="nav-link"
+              href="proyek.html"
+              >Proyek Saya</a
+            >
+            <a
+              class="nav-link"
+              href="kontak.html"
+              >Kontak</a
+            >
+            <a
+              class="nav-link"
+              href="blog.html"
+              >Blog</a
+            >
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Wrapper untuk sticky footer -->
+    <div class="wrapper">
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Main Container Slideshow Editor -->
+        <div
+          id="mainContainer"
+          class="container-fluid mt-5 pt-5"
+        >
+          <h1 class="display-5 fw-bold text-center pb-3"><span class="text-warning fw-bold">Slideshow</span> Editor</h1>
+          <div class="row">
+            <!-- Editor (Left Column) -->
+            <div class="col-md-9 mb-3">
+              <div id="editorContainer">
+                <div id="slideEditor">
+                  <!-- Jika belum ada slide, tampilkan area unggah -->
+                  <div id="uploadZone">
+                    <i class="fas fa-cloud-upload-alt fa-3x mb-3"></i>
+                    <h4>Drag & Drop atau Klik untuk Upload Slide</h4>
+                    <p>Upload gambar (JPG, PNG) untuk membuat presentasi</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Tool Panel (Right Column) -->
+            <div
+              class="col-md-3 mb-3"
+              id="toolPanel"
+            >
+              <button
+                id="uploadBtn"
+                class="btn btn-outline-primary"
+              >
+                <i class="fas fa-upload"></i> Unggah Slide
+              </button>
+              <button
+                id="addTextBtn"
+                class="btn btn-outline-secondary"
+              >
+                <i class="fas fa-font"></i> Tambah Teks
+              </button>
+              <button
+                id="prevBtn"
+                class="btn btn-outline-info"
+                disabled
+              >
+                <i class="fas fa-chevron-left"></i> Sebelumnya
+              </button>
+              <button
+                id="nextBtn"
+                class="btn btn-outline-info"
+                disabled
+              >
+                Selanjutnya <i class="fas fa-chevron-right"></i>
+              </button>
+              <button
+                id="downloadSlideBtn"
+                class="btn btn-outline-success"
+                disabled
+              >
+                <i class="fas fa-download"></i> Download Slide
+              </button>
+              <button
+                id="downloadPresBtn"
+                class="btn btn-outline-success"
+                disabled
+              >
+                <i class="fas fa-download"></i> Download Presentasi (ZIP)
+              </button>
+              <button
+                id="gridViewBtn"
+                class="btn btn-outline-warning"
+                disabled
+              >
+                <i class="fas fa-th"></i> Tampilan Grid
+              </button>
+              <button
+                id="fullscreenBtn"
+                class="btn btn-outline-dark"
+                disabled
+              >
+                <i class="fas fa-expand"></i> Fullscreen
+              </button>
+              <button
+                id="clearBtn"
+                class="btn btn-outline-danger"
+              >
+                <i class="fas fa-trash"></i> Hapus Semua Slide
+              </button>
+              <!-- Pengaturan Transisi -->
+              <div id="transitionSettings">
+                <label for="transitionType">Jenis Transisi</label>
+                <select
+                  id="transitionType"
+                  class="form-select"
+                >
+                  <option
+                    value="fade"
+                    selected
+                  >
+                    Fade In
+                  </option>
+                  <option value="zoom">Zoom In</option>
+                </select>
+                <label for="transitionDuration"> Durasi Transisi (<span id="durationVal">1</span> detik) </label>
+                <input
+                  type="range"
+                  id="transitionDuration"
+                  min="0.5"
+                  max="5"
+                  step="0.1"
+                  value="1"
+                  class="form-range"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer (selalu berada di bawah konten) -->
+      <footer class="bg-primary text-white text-center p-3">
+        <div class="container">
+          <p>&copy; 2025 Bryan Fildy. All rights reserved.</p>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Hidden File Input -->
+    <input
+      type="file"
+      id="fileInput"
+      accept="image/*"
+      multiple
+      style="display: none"
+    />
+
+    <!-- Grid View Overlay -->
+    <div id="gridView"></div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom Script Advanced Slideshow Editor -->
+    <script>
+      /***********************
+       * Variabel Global
+       ***********************/
+      let slides = []; // Setiap slide: { image: dataURL, overlays: [ { id, text, x, y } ] }
+      let currentSlideIndex = 0;
+      let overlayCounter = 0;
+      let isDragging = false;
+      let dragOffsetX = 0;
+      let dragOffsetY = 0;
+      let currentDragElement = null;
+      let fsHideTimeout;
+
+      // Variabel Global Transisi
+      let globalTransitionType = 'fade'; // "fade" atau "zoom"
+      let globalTransitionDuration = 1; // dalam detik
+
+      // Elemen DOM
+      const uploadZone = document.getElementById('uploadZone');
+      const slideEditor = document.getElementById('slideEditor');
+      const editorContainer = document.getElementById('editorContainer');
+      const fileInput = document.getElementById('fileInput');
+      const uploadBtn = document.getElementById('uploadBtn');
+      const addTextBtn = document.getElementById('addTextBtn');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const downloadSlideBtn = document.getElementById('downloadSlideBtn');
+      const downloadPresBtn = document.getElementById('downloadPresBtn');
+      const gridViewBtn = document.getElementById('gridViewBtn');
+      const fullscreenBtn = document.getElementById('fullscreenBtn');
+      const clearBtn = document.getElementById('clearBtn');
+      const gridView = document.getElementById('gridView');
+
+      // Elemen untuk kontrol transisi
+      const transitionTypeSelect = document.getElementById('transitionType');
+      const transitionDurationInput = document.getElementById('transitionDuration');
+      const durationValLabel = document.getElementById('durationVal');
+
+      // Elemen untuk fullscreen overlay buttons (dibuat saat masuk fullscreen)
+      let fsExitButton, fsPrevButton, fsNextButton;
+
+      /***********************
+       * Inisialisasi
+       ***********************/
+      function init() {
+        // Event untuk update pengaturan transisi
+        transitionTypeSelect.addEventListener('change', (e) => {
+          globalTransitionType = e.target.value;
+        });
+        transitionDurationInput.addEventListener('input', (e) => {
+          globalTransitionDuration = parseFloat(e.target.value);
+          durationValLabel.textContent = e.target.value;
+        });
+
+        // Klik pada zona unggah untuk memicu file input
+        uploadZone.addEventListener('click', () => fileInput.click());
+
+        // Drag & Drop pada zona unggah
+        ['dragenter', 'dragover'].forEach((evt) => {
+          uploadZone.addEventListener(evt, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            uploadZone.classList.add('dragover');
+          });
+        });
+        ['dragleave', 'drop'].forEach((evt) => {
+          uploadZone.addEventListener(evt, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            uploadZone.classList.remove('dragover');
+          });
+        });
+        uploadZone.addEventListener('drop', handleDrop);
+
+        // Perubahan file input
+        fileInput.addEventListener('change', (e) => {
+          handleFiles(e.target.files);
+        });
+
+        // Tombol-tombol panel
+        uploadBtn.addEventListener('click', () => fileInput.click());
+        addTextBtn.addEventListener('click', addTextOverlay);
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+        downloadSlideBtn.addEventListener('click', downloadCurrentSlide);
+        downloadPresBtn.addEventListener('click', downloadPresentation);
+        gridViewBtn.addEventListener('click', toggleGridView);
+        fullscreenBtn.addEventListener('click', toggleFullscreen);
+        clearBtn.addEventListener('click', clearSlides);
+
+        // Event drag untuk overlay teks
+        slideEditor.addEventListener('mousedown', startDrag);
+        slideEditor.addEventListener('mousemove', duringDrag);
+        slideEditor.addEventListener('mouseup', endDrag);
+        slideEditor.addEventListener('mouseleave', endDrag);
+
+        // Navigasi keyboard
+        document.addEventListener('keydown', (e) => {
+          if (slides.length === 0) return;
+          if (e.key === 'ArrowLeft') prevSlide();
+          if (e.key === 'ArrowRight') nextSlide();
+          if (e.key.toLowerCase() === 'f') toggleFullscreen();
+          if (e.key === 'Escape' && document.fullscreenElement) exitFullscreen();
+        });
+
+        // Listen untuk perubahan fullscreen agar layout kembali normal saat keluar fullscreen
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+      }
+
+      /***********************
+       * Upload & Slide Management
+       ***********************/
+      function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        handleFiles(files);
+      }
+
+      function handleFiles(files) {
+        const fileArray = Array.from(files).filter((file) => file.type.startsWith('image/'));
+        if (!fileArray.length) {
+          alert('Harap unggah file gambar saja.');
+          return;
+        }
+        const promises = fileArray.map((file) => {
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (e) => resolve(e.target.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+          });
+        });
+        Promise.all(promises)
+          .then((results) => {
+            results.forEach((imgData) => {
+              slides.push({ image: imgData, overlays: [] });
+            });
+            currentSlideIndex = slides.length - results.length;
+            updateUI();
+            loadSlide(currentSlideIndex);
+          })
+          .catch((err) => {
+            console.error(err);
+            alert('Terjadi kesalahan saat membaca file.');
+          });
+      }
+
+      function updateUI() {
+        const hasSlides = slides.length > 0;
+        // Sembunyikan zona unggah jika sudah ada slide
+        uploadZone.style.display = hasSlides ? 'none' : 'flex';
+        // Aktifkan tombol navigasi & download jika ada slide
+        prevBtn.disabled = !hasSlides;
+        nextBtn.disabled = !hasSlides;
+        downloadSlideBtn.disabled = !hasSlides;
+        downloadPresBtn.disabled = !hasSlides;
+        gridViewBtn.disabled = !hasSlides;
+        fullscreenBtn.disabled = !hasSlides;
+      }
+
+      function loadSlide(index) {
+        if (!slides[index]) return;
+        // Kosongkan editor
+        slideEditor.innerHTML = '';
+        // Tampilkan gambar background slide
+        const bgImg = document.createElement('img');
+        bgImg.src = slides[index].image;
+        bgImg.classList.add('slide-bg');
+        // Terapkan animasi transisi sesuai pengaturan
+        bgImg.style.animationName = globalTransitionType === 'fade' ? 'fadeIn' : 'zoomIn';
+        bgImg.style.animationDuration = globalTransitionDuration + 's';
+        bgImg.style.animationTimingFunction = 'ease';
+        slideEditor.appendChild(bgImg);
+        // Tambahkan overlay teks yang tersimpan
+        slides[index].overlays.forEach((overlayData) => {
+          createOverlayElement(overlayData);
+        });
+      }
+
+      function prevSlide() {
+        if (currentSlideIndex > 0) {
+          saveCurrentOverlays();
+          currentSlideIndex--;
+          loadSlide(currentSlideIndex);
+        }
+      }
+      function nextSlide() {
+        if (currentSlideIndex < slides.length - 1) {
+          saveCurrentOverlays();
+          currentSlideIndex++;
+          loadSlide(currentSlideIndex);
+        }
+      }
+
+      function clearSlides() {
+        if (confirm('Hapus semua slide?')) {
+          slides = [];
+          currentSlideIndex = 0;
+          updateUI();
+          slideEditor.innerHTML = `<div id="uploadZone">
+            <i class="fas fa-cloud-upload-alt fa-3x mb-3"></i>
+            <h4>Drag & Drop atau Klik untuk Upload Slide</h4>
+            <p>Upload gambar (JPG, PNG) untuk membuat presentasi</p>
+          </div>`;
+        }
+      }
+
+      /***********************
+       * Overlay Teks (Editor Sederhana)
+       ***********************/
+      function addTextOverlay() {
+        // Buat data overlay baru
+        const overlayData = {
+          id: 'overlay-' + ++overlayCounter,
+          text: 'Teks Baru',
+          x: 50,
+          y: 50,
+        };
+        slides[currentSlideIndex].overlays.push(overlayData);
+        createOverlayElement(overlayData);
+      }
+
+      function createOverlayElement(data) {
+        const div = document.createElement('div');
+        div.classList.add('text-overlay');
+        div.setAttribute('data-id', data.id);
+        div.style.left = data.x + 'px';
+        div.style.top = data.y + 'px';
+        div.textContent = data.text;
+        // Tombol hapus
+        const del = document.createElement('div');
+        del.classList.add('delete-btn');
+        del.innerHTML = '&times;';
+        del.addEventListener('click', (e) => {
+          e.stopPropagation();
+          deleteOverlay(data.id);
+        });
+        div.appendChild(del);
+        // Double click untuk mengedit teks
+        div.addEventListener('dblclick', (e) => {
+          e.stopPropagation();
+          div.contentEditable = true;
+          div.classList.add('editing');
+          div.focus();
+        });
+        div.addEventListener('blur', () => {
+          div.contentEditable = false;
+          div.classList.remove('editing');
+          updateOverlayData(data.id, div.textContent, parseInt(div.style.left), parseInt(div.style.top));
+        });
+        slideEditor.appendChild(div);
+      }
+
+      function updateOverlayData(id, text, x, y) {
+        const overlay = slides[currentSlideIndex].overlays.find((o) => o.id === id);
+        if (overlay) {
+          overlay.text = text;
+          overlay.x = x;
+          overlay.y = y;
+        }
+      }
+
+      function deleteOverlay(id) {
+        slides[currentSlideIndex].overlays = slides[currentSlideIndex].overlays.filter((o) => o.id !== id);
+        const el = slideEditor.querySelector(`[data-id="${id}"]`);
+        if (el) el.remove();
+      }
+
+      function saveCurrentOverlays() {
+        // Data overlay tersimpan secara real time; tambahkan logika undo/redo jika diperlukan.
+      }
+
+      /***********************
+       * Drag & Drop untuk Overlay
+       ***********************/
+      function startDrag(e) {
+        if (e.target.classList.contains('text-overlay')) {
+          isDragging = true;
+          currentDragElement = e.target;
+          const rect = currentDragElement.getBoundingClientRect();
+          dragOffsetX = e.clientX - rect.left;
+          dragOffsetY = e.clientY - rect.top;
+        }
+      }
+      function duringDrag(e) {
+        if (isDragging && currentDragElement) {
+          let posX = e.clientX - dragOffsetX - slideEditor.getBoundingClientRect().left;
+          let posY = e.clientY - dragOffsetY - slideEditor.getBoundingClientRect().top;
+          // Batasi agar overlay tidak keluar dari editor
+          posX = Math.max(0, Math.min(posX, slideEditor.clientWidth - currentDragElement.offsetWidth));
+          posY = Math.max(0, Math.min(posY, slideEditor.clientHeight - currentDragElement.offsetHeight));
+          currentDragElement.style.left = posX + 'px';
+          currentDragElement.style.top = posY + 'px';
+        }
+      }
+      function endDrag(e) {
+        if (isDragging && currentDragElement) {
+          const id = currentDragElement.getAttribute('data-id');
+          updateOverlayData(id, currentDragElement.textContent, parseInt(currentDragElement.style.left), parseInt(currentDragElement.style.top));
+        }
+        isDragging = false;
+        currentDragElement = null;
+      }
+
+      /***********************
+       * Download Fitur
+       ***********************/
+      function downloadCurrentSlide() {
+        html2canvas(slideEditor).then((canvas) => {
+          const link = document.createElement('a');
+          link.href = canvas.toDataURL('image/png');
+          link.download = 'slide-' + (currentSlideIndex + 1) + '.png';
+          link.click();
+        });
+      }
+
+      function downloadPresentation() {
+        const zip = new JSZip();
+        let count = 0;
+        slides.forEach((slide, index) => {
+          loadSlide(index);
+          setTimeout(() => {
+            html2canvas(slideEditor).then((canvas) => {
+              const dataUrl = canvas.toDataURL('image/png');
+              zip.file(`slide-${index + 1}.png`, dataURLtoBlob(dataUrl));
+              count++;
+              if (count === slides.length) {
+                zip.generateAsync({ type: 'blob' }).then((content) => {
+                  const link = document.createElement('a');
+                  link.href = URL.createObjectURL(content);
+                  link.download = 'presentation.zip';
+                  link.click();
+                });
+              }
+            });
+          }, 300 * index);
+        });
+        setTimeout(() => loadSlide(currentSlideIndex), 300 * slides.length + 500);
+      }
+
+      function dataURLtoBlob(dataurl) {
+        const arr = dataurl.split(','),
+          mime = arr[0].match(/:(.*?);/)[1],
+          bstr = atob(arr[1]),
+          n = bstr.length,
+          u8arr = new Uint8Array(n);
+        while (n--) {
+          u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new Blob([u8arr], { type: mime });
+      }
+
+      /***********************
+       * Grid View
+       ***********************/
+      function toggleGridView() {
+        if (gridView.classList.contains('active')) {
+          gridView.classList.remove('active');
+          gridView.innerHTML = '';
+        } else {
+          gridView.classList.add('active');
+          gridView.innerHTML = '';
+          slides.forEach((slide, index) => {
+            const thumbDiv = document.createElement('div');
+            thumbDiv.classList.add('grid-thumb');
+            if (index === currentSlideIndex) thumbDiv.classList.add('active');
+            const img = document.createElement('img');
+            img.src = slide.image;
+            thumbDiv.appendChild(img);
+            thumbDiv.addEventListener('click', () => {
+              saveCurrentOverlays();
+              currentSlideIndex = index;
+              loadSlide(currentSlideIndex);
+              toggleGridView();
+            });
+            gridView.appendChild(thumbDiv);
+          });
+        }
+      }
+
+      /***********************
+       * Fullscreen Mode & Overlay Buttons
+       ***********************/
+      function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+          editorContainer
+            .requestFullscreen()
+            .then(() => {
+              editorContainer.classList.add('fullscreen');
+              addFSOverlayButtons();
+              setupFSMouseMovement();
+            })
+            .catch((err) => {
+              alert('Gagal masuk fullscreen: ' + err.message);
+            });
+        } else {
+          exitFullscreen();
+        }
+      }
+      function exitFullscreen() {
+        if (document.fullscreenElement) {
+          document.exitFullscreen();
+        }
+      }
+      function handleFullscreenChange() {
+        if (!document.fullscreenElement) {
+          // Kembalikan layout setelah keluar fullscreen
+          editorContainer.classList.remove('fullscreen');
+          removeFSOverlayButtons();
+          clearFSMouseMovement();
+        }
+      }
+      function addFSOverlayButtons() {
+        // Tombol Exit Fullscreen di kiri bawah
+        fsExitButton = document.createElement('button');
+        fsExitButton.className = 'fs-overlay-button fs-exit-button';
+        fsExitButton.innerHTML = '<i class="fas fa-compress"></i> Keluar';
+        fsExitButton.addEventListener('click', exitFullscreen);
+        editorContainer.appendChild(fsExitButton);
+
+        // Tombol Previous di sisi kiri
+        fsPrevButton = document.createElement('button');
+        fsPrevButton.className = 'fs-overlay-button fs-prev-button';
+        fsPrevButton.innerHTML = '<i class="fas fa-chevron-left"></i>';
+        fsPrevButton.addEventListener('click', prevSlide);
+        editorContainer.appendChild(fsPrevButton);
+
+        // Tombol Next di sisi kanan
+        fsNextButton = document.createElement('button');
+        fsNextButton.className = 'fs-overlay-button fs-next-button';
+        fsNextButton.innerHTML = '<i class="fas fa-chevron-right"></i>';
+        fsNextButton.addEventListener('click', nextSlide);
+        editorContainer.appendChild(fsNextButton);
+      }
+      function removeFSOverlayButtons() {
+        if (fsExitButton && fsExitButton.parentNode) {
+          fsExitButton.parentNode.removeChild(fsExitButton);
+        }
+        if (fsPrevButton && fsPrevButton.parentNode) {
+          fsPrevButton.parentNode.removeChild(fsPrevButton);
+        }
+        if (fsNextButton && fsNextButton.parentNode) {
+          fsNextButton.parentNode.removeChild(fsNextButton);
+        }
+      }
+      function setupFSMouseMovement() {
+        editorContainer.addEventListener('mousemove', fsMouseMoveHandler);
+      }
+      function clearFSMouseMovement() {
+        editorContainer.removeEventListener('mousemove', fsMouseMoveHandler);
+      }
+      function fsMouseMoveHandler() {
+        if (fsHideTimeout) {
+          clearTimeout(fsHideTimeout);
+        }
+        if (fsExitButton) fsExitButton.style.opacity = '1';
+        if (fsPrevButton) fsPrevButton.style.opacity = '1';
+        if (fsNextButton) fsNextButton.style.opacity = '1';
+        fsHideTimeout = setTimeout(() => {
+          if (fsExitButton) fsExitButton.style.opacity = '0';
+          if (fsPrevButton) fsPrevButton.style.opacity = '0';
+          if (fsNextButton) fsNextButton.style.opacity = '0';
+        }, 1000);
+      }
+
+      /***********************
+       * Inisialisasi saat DOM siap
+       ***********************/
+      document.addEventListener('DOMContentLoaded', init);
+    </script>
+  </body>
+</html>

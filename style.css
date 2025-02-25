@@ -6,7 +6,7 @@
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 16px;
   line-height: 1.6;
   color: #333;
@@ -25,11 +25,13 @@ a {
 }
 
 .navbar {
+  position: fixed;
   top: 0;
+  width: 100%;
   box-shadow: 0 0 0 0.5px var(--light-color) inset;
   z-index: 999;
-  background: transparent;
-  backdrop-filter: blur(10px);
+  background: var(--primary-color) !important;
+  font-family: "Poppins", sans-serif;
 }
 
 .navbar span {
@@ -82,7 +84,7 @@ a {
 
 .sun-moon {
   position: absolute;
-  content: '';
+  content: "";
   height: 26px;
   width: 26px;
   left: 4px;
@@ -110,7 +112,7 @@ a {
 }
 
 .hero-section {
-  background-image: url('https://images.unsplash.com/photo-1557683316-973673baf926');
+  background-image: url("https://images.unsplash.com/photo-1557683316-973673baf926");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -143,7 +145,7 @@ a {
   align-items: center;
   border-radius: 5px;
   background: #0054c9;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   box-shadow: 0px 6px 24px 0px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   cursor: pointer;
@@ -152,7 +154,7 @@ a {
 }
 
 .button:after {
-  content: ' ';
+  content: " ";
   width: 0%;
   height: 100%;
   background: #ffd401;
@@ -206,7 +208,7 @@ a {
   height: 120px;
   width: 100%;
   padding-top: 40px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   justify-content: center;
 }
 
@@ -244,7 +246,7 @@ a {
 
 .wrapper .tooltip::before {
   position: absolute;
-  content: '';
+  content: "";
   height: 8px;
   width: 8px;
   background: var(--light-color);
@@ -409,7 +411,7 @@ body.dark-mode .card__description {
 
 #proyek {
   position: relative;
-  background-image: url('https://images.unsplash.com/photo-1557683316-973673baf926');
+  background-image: url("https://images.unsplash.com/photo-1557683316-973673baf926");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -442,7 +444,7 @@ body.dark-mode .card__description {
 
 /* Add these rules for last row alignment */
 .cards-container::after {
-  content: '';
+  content: "";
   width: 0;
 }
 
@@ -509,7 +511,7 @@ body.dark-mode .card__description {
 
   /* Add these rules to center last row */
   .cards-container::after {
-    content: '';
+    content: "";
     grid-column: span 3;
   }
 
@@ -589,7 +591,7 @@ body.dark-mode .card__description {
 }
 
 #kontak::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -630,7 +632,7 @@ body.dark-mode .contact-info div {
 }
 
 contact-info div::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -680,7 +682,7 @@ body.dark-mode .contact-info p {
 /* ...existing code... */
 
 .dropdown-menu {
-  background: rgba(255, 255, 255, 0.1);
+  background-color: var(--primary-color);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
@@ -714,7 +716,7 @@ body.dark-mode .contact-info p {
 }
 
 .timeline::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 6px;
   background-color: var(--secondary-color);
@@ -732,7 +734,7 @@ body.dark-mode .contact-info p {
 }
 
 .timeline-item::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 25px;
   height: 25px;
