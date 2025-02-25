@@ -6,7 +6,7 @@
 }
 
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 16px;
   line-height: 1.6;
   color: #333;
@@ -32,7 +32,7 @@ a {
   z-index: 999;
   background: var(--primary-color) !important;
   backdrop-filter: blur(10px);
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .navbar span {
@@ -52,7 +52,7 @@ a {
   transition: all 0.3s ease;
   width: fit-content;
   font-size: 1rem;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .navbar img {
@@ -63,7 +63,7 @@ a {
 .navbar-brand {
   font-size: 1.5rem;
   color: var(--light-color) !important;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .dropdown-menu {
