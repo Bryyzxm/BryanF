@@ -46,6 +46,27 @@ const translations = {
     contact_second: 'Me',
     email: 'Email',
     phone: 'Phone',
+
+    // Skills Section
+    skill_frontend: 'Frontend Development',
+    skill_frontend_since: 'Since 2020',
+    skill_uiux: 'UI/UX Design',
+    skill_uiux_since: 'Since 2024',
+    skill_ai: 'AI Engineering',
+    skill_ai_since: 'Since 2025',
+    skill_content: 'Content Creation',
+    skill_content_since: 'Since 2024',
+    skill_level_beginner: 'Beginner',
+    skill_level_intermediate: 'Intermediate',
+
+    // Timeline Education
+    timeline_date_smp: '2023 - Present',
+    timeline_title_smp: 'Vianney Junior High School',
+    timeline_desc_smp_1: 'Grade 7 achieved first rank in class and excellent academic achievements',
+    timeline_desc_smp_2: 'Grade 8 focusing on programming skill development and academics',
+    timeline_date_sd: '2017 - 2022',
+    timeline_title_sd: 'Vianney Elementary School',
+    timeline_desc_sd: 'Completed primary education with excellent academic achievements',
   },
   id: {
     // Navigation
@@ -96,5 +117,26 @@ const translations = {
     contact_second: 'Saya',
     email: 'Email',
     phone: 'Telepon',
+
+    // Skills Section
+    skill_frontend: 'Frontend Development',
+    skill_frontend_since: 'Sejak 2020',
+    skill_uiux: 'UI/UX Design',
+    skill_uiux_since: 'Sejak 2024',
+    skill_ai: 'AI Engineering',
+    skill_ai_since: 'Sejak 2025',
+    skill_content: 'Content Creation',
+    skill_content_since: 'Sejak 2024',
+    skill_level_beginner: 'Beginner',
+    skill_level_intermediate: 'Intermediate',
+
+    // Timeline Education
+    timeline_date_smp: '2023 - Sekarang',
+    timeline_title_smp: 'SMP Vianney',
+    timeline_desc_smp_1: 'Kelas 7 meraih juara 1 umum kelas dan meraih prestasi akademik cemerlang',
+    timeline_desc_smp_2: 'Kelas 8 dengan fokus pada pengembangan skill programming dan akademik',
+    timeline_date_sd: '2017 - 2022',
+    timeline_title_sd: 'SD Vianney',
+    timeline_desc_sd: 'Menyelesaikan pendidikan dasar dengan prestasi akademik cemerlang',
   },
 };
