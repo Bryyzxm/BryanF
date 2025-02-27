@@ -314,11 +314,10 @@ body.dark-mode .card {
   box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.1);
 }
 
-/* Tambahkan styling untuk gambar card */
 .card img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Membuat gambar menutupi area dengan proporsi yang tepat */
+  object-fit: cover;
   transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   will-change: transform;
   backface-visibility: hidden;
@@ -333,19 +332,19 @@ body.dark-mode .card {
 
 .card__content {
   position: absolute;
-  top: 0; /* Ubah dari 3rem ke 0 */
+  top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   padding: 20px;
-  background-color: rgba(242, 242, 242, 0.9); /* Tambahkan transparansi */
+  background-color: rgba(242, 242, 242, 0.9);
   transform: rotateX(-90deg);
   transform-origin: bottom;
   transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  display: flex; /* Tambahkan flexbox */
+  display: flex;
   flex-direction: column;
-  justify-content: center; /* Center konten secara vertikal */
-  align-items: center; /* Center konten secara horizontal */
+  justify-content: center;
+  align-items: center;
 }
 
 /* Cards dark mode */
@@ -359,11 +358,11 @@ body.dark-mode .card__content {
 }
 
 .card:hover img {
-  transform: scale(1.1); /* Tambah efek zoom pada hover */
+  transform: scale(1.1);
 }
 
 .card__title {
-  margin: 0 0 10px 0; /* Tambah margin bottom */
+  margin: 0 0 10px 0;
   font-size: 24px;
   color: #333;
   font-weight: 700;
@@ -405,12 +404,7 @@ body.dark-mode .card__description {
   color: inherit;
 }
 
-/* ...existing code... */
-
-/* Hapus .wave-transition styles yang lama */
-
-/* Style baru untuk transisi dan proyek section */
-
+/* Style for Project Section */
 #proyek {
   position: relative;
   background-image: url('https://images.unsplash.com/photo-1557683316-973673baf926');
@@ -444,32 +438,17 @@ body.dark-mode .card__description {
   justify-items: center;
 }
 
-/* Add these rules for last row alignment */
 .cards-container::after {
   content: '';
   width: 0;
 }
 
-/* When there are 2 items in the last row */
 .cards-container:last-child:nth-child(3n-1) {
   grid-column-end: -2;
 }
 
-/* When there is 1 item in the last row */
 .cards-container:last-child:nth-child(3n-2) {
   grid-column: 2;
-}
-
-@media (min-width: 1200px) {
-  .cards-container {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  /* Center last two cards */
-  .card:last-child:nth-child(3n-1),
-  .card:nth-last-child(2):nth-child(3n-2) {
-    transform: translateX(50%);
-  }
 }
 
 #proyek .content-container {
@@ -486,12 +465,14 @@ body.dark-mode .card__description {
   z-index: 1;
 }
 
-/* Style untuk container proyek info */
+/* Contact Info Container */
 .contact-info {
-  display: flex;
-  justify-content: center;
-  gap: 3rem;
-  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 2rem;
 }
 
 .contact-info div {
@@ -504,69 +485,6 @@ body.dark-mode .card__description {
 
 .contact-info div:hover {
   transform: translateY(-5px);
-}
-
-@media (min-width: 1200px) {
-  .cards-container {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  /* Add these rules to center last row */
-  .cards-container::after {
-    content: '';
-    grid-column: span 3;
-  }
-
-  .card:last-child:nth-child(3n - 1) {
-    grid-column-end: -2;
-  }
-
-  .card:last-child:nth-child(3n - 2) {
-    grid-column-end: 3;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 1199px) {
-  .cards-container {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 767px) {
-  .cards-container {
-    grid-template-columns: 1fr;
-    padding: 0 1rem;
-    place-items: center;
-  }
-}
-
-@media (max-width: 768px) {
-  .cards-container {
-    grid-template-columns: 1fr;
-  }
-  .cards-container::after {
-    grid-column: span 1;
-  }
-}
-@media (max-width: 576px) {
-  .button {
-    margin: 0.2rem auto;
-    width: 60%;
-    font-size: 0.8rem;
-  }
-
-  .hero-section h1 {
-    font-size: 36px;
-  }
-
-  .hero-section p {
-    font-size: 14px;
-  }
-
-  .wrapper {
-    padding-top: 10px;
-    margin: 0 auto;
-  }
 }
 
 #tentang .content-container {
@@ -584,8 +502,6 @@ body.dark-mode .card__description {
   }
 }
 
-/* ...existing code... */
-
 /* Update About and Skills Section Layout */
 #tentang .content-container {
   max-width: 1000px;
@@ -601,162 +517,76 @@ body.dark-mode .card__description {
 
 /* Skills Container Updates */
 .skills-container {
-  max-width: 1000px;
+  max-width: 800px;
   margin: 3rem auto;
-  padding: 0 2rem;
+  padding: 0 1rem;
 }
 
 .skill-timeline {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
 }
 
 .skill-item {
-  max-width: 800px;
-  margin: 0 auto;
   background: rgba(255, 255, 255, 0.9);
   border-left: 4px solid var(--primary-color);
   padding: 1.5rem;
   border-radius: 0 8px 8px 0;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* Responsive adjustments */
-@media (min-width: 992px) {
-  #tentang .content-container p {
-    padding: 1rem 3rem !important;
-  }
-
-  .skill-item {
-    width: 100%;
-    max-width: 800px;
-  }
-}
-
-/* ...rest of existing code... */
-
-#kontak {
-  padding: 5rem 0;
-  position: relative;
-  overflow: hidden;
-}
-
-#kontak::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: px;
-  background: linear-gradient(to bottom, transparent, var(--primary-color));
-}
-
-#kontak h1 {
-  margin-bottom: 3rem;
-  position: relative;
-}
-
-.contact-info {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 0 2rem;
-}
-
-/* Contact section dark mode */
-body.dark-mode .contact-info div {
-  background: var(--dark-surface);
-  color: var(--dark-text);
-}
-
-.contact-info div {
-  background: white;
-  padding: 2.5rem;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  height: 100%;
 }
 
-contact-info div::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 5px;
-  background: var(--primary-color);
-  transform: scaleX(0);
-  transition: transform 0.3s ease;
+.skill-title {
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: 700;
 }
 
-.contact-info div:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-}
-
-.contact-info div:hover::before {
-  transform: scaleX(1);
-}
-
-.contact-info h3 {
-  color: var(--secondary-color);
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  font-weight: 600;
-}
-
-.contact-info p {
-  color: #666;
-  font-size: 1.1rem;
+.since {
+  color: #333 !important;
+  font-size: 0.9rem;
+  font-weight: 500;
   margin: 0;
 }
 
-/* Contact section dark mode */
-body.dark-mode .contact-info p {
-  color: var(--dark-text-secondary);
+.skill-tech {
+  color: #555 !important;
+  opacity: 1;
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
-/* ...existing code... */
-
-/* Remove these classes */
-.loading-indicator,
-.loading-indicator.hidden,
-.spinner {
-  display: none;
+.skill-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
 }
 
-/* ...existing code... */
-
-.dropdown-menu {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+.since {
+  color: var(--dark-color) !important;
+  font-size: 0.9rem;
+  margin: 0;
 }
 
-.dropdown-item {
+.skill-level {
+  background: var(--primary-color);
   color: var(--light-color);
+  padding: 0.2rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
 }
 
-.dropdown-item:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: var(--secondary-color);
-}
-
-.dropdown-item.active {
-  background: var(--secondary-color);
-  color: var(--dark-color);
-  font-weight: bold;
-}
-
-.dropdown-item.active:hover {
-  background: var(--secondary-color);
-  color: var(--dark-color);
+.skill-tech {
+  color: var(--dark-color) !important;
+  opacity: 0.8;
+  margin: 0;
+  font-size: 0.9rem;
 }
 
 /* Timeline Education Styles */
@@ -811,7 +641,7 @@ body.dark-mode .contact-info p {
 }
 
 .timeline-content {
-  padding: 1rem 1rem;
+  padding: 1rem;
   background-color: white;
   position: relative;
   border-radius: 6px;
@@ -845,87 +675,6 @@ body.dark-mode .timeline-title {
   color: var(--secondary-color);
 }
 
-/* Skills Section */
-.skills-container {
-  max-width: 800px;
-  margin: 3rem auto;
-  padding: 0 1rem;
-}
-
-.skill-timeline {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-/* Skills Section Updates */
-.skill-item {
-  background: rgba(255, 255, 255, 0.9); /* Lighter background */
-  border-left: 4px solid var(--primary-color);
-  padding: 1.5rem;
-  border-radius: 0 8px 8px 0;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 1rem;
-}
-
-.skill-item:hover {
-  transform: translateX(10px);
-  border-left-color: var(--secondary-color);
-  background: rgba(255, 255, 255, 1); /* Fully opaque on hover */
-}
-
-.skill-title {
-  color: var(--primary-color); /* Changed from secondary to primary for better contrast */
-  margin-bottom: 0.5rem;
-  font-size: 1.2rem;
-  font-weight: 700; /* Increased font weight */
-}
-
-.since {
-  color: #333 !important; /* Darker text color */
-  font-size: 0.9rem;
-  font-weight: 500; /* Added font weight */
-  margin: 0;
-}
-
-.skill-tech {
-  color: #555 !important; /* Medium dark text color */
-  opacity: 1; /* Removed opacity */
-  margin: 0;
-  font-size: 0.9rem;
-  font-weight: 500; /* Added font weight */
-}
-
-.skill-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
-}
-
-.since {
-  color: var(--dark-color) !important;
-  font-size: 0.9rem;
-  margin: 0;
-}
-
-.skill-level {
-  background: var(--primary-color);
-  color: var(--light-color);
-  padding: 0.2rem 0.8rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 500;
-}
-
-.skill-tech {
-  color: var(--dark-color) !important;
-  opacity: 0.8;
-  margin: 0;
-  font-size: 0.9rem;
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
   .skill-info {
@@ -941,14 +690,34 @@ body.dark-mode .timeline-title {
   .skill-item {
     padding: 1rem;
   }
-}
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .skill-info {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
+  .cards-container {
+    grid-template-columns: 1fr;
+    padding: 0 1rem;
+    place-items: center;
+  }
+
+  .cards-container::after {
+    grid-column: span 1;
+  }
+
+  .timeline::after {
+    left: 31px;
+  }
+
+  .timeline-item {
+    width: 100%;
+    padding-left: 70px;
+    padding-right: 25px;
+  }
+
+  .right {
+    left: 0;
+  }
+
+  .right::after,
+  .left::after {
+    left: 15px;
   }
 }
 
@@ -977,17 +746,6 @@ body.dark-mode .timeline-title {
   }
 }
 
-/* ...rest of code... */
-
-/* ScrollReveal Styles */
-.sr-only {
-  opacity: 0;
-}
-
-[data-sr] {
-  visibility: hidden;
-}
-
 /* Optional: Add smooth scrolling to page */
 html {
   scroll-behavior: smooth;
@@ -1012,15 +770,82 @@ html {
   animation-play-state: paused !important;
 }
 
-/* ScrollReveal Styles */
-.reveal {
-  position: relative;
-  transform: translateY(150px);
-  opacity: 0;
-  transition: all 1s ease;
-}
+/* Responsive Media Queries - Grouped by breakpoint */
+@media (min-width: 1200px) {
+  .cards-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
 
-.reveal.active {
-  transform: translateY(0px);
-  opacity: 1;
+  .card:last-child:nth-child(3n-1),
+  .card:nth-last-child(2):nth-child(3n-2) {
+    .cards-container {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* Center last two cards */
+    .card:last-child:nth-child(3n-1),
+    .card:nth-last-child(2):nth-child(3n-2) {
+      transform: translateX(50%);
+    }
+
+    .cards-container::after {
+      content: '';
+      grid-column: span 3;
+    }
+
+    .card:last-child:nth-child(3n - 1) {
+      grid-column-end: -2;
+    }
+
+    .card:last-child:nth-child(3n - 2) {
+      grid-column-end: 3;
+    }
+  }
+
+  @media (min-width: 992px) {
+    #tentang .content-container p {
+      padding: 1rem 3rem !important;
+    }
+
+    .skill-item {
+      width: 100%;
+      max-width: 800px;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1199px) {
+    .cards-container {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 576px) {
+    .button {
+      margin: 0.2rem auto;
+      width: 60%;
+      font-size: 0.8rem;
+    }
+
+    .hero-section h1 {
+      font-size: 36px;
+    }
+
+    .hero-section p {
+      font-size: 14px;
+    }
+
+    .wrapper {
+      padding-top: 10px;
+      margin: 0 auto;
+    }
+
+    .skill-timeline {
+      grid-template-columns: 1fr; /* Change to 1 column on mobile */
+      gap: 1rem;
+    }
+
+    .skill-item {
+      margin-bottom: 0.5rem;
+    }
+  }
 }
