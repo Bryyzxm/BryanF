@@ -66,6 +66,43 @@
 
     <!-- Add this in the head section -->
     <script src="js/translations.js"></script>
+
+    <style>
+      /* Add these styles for scroll reveal animations */
+      .reveal {
+        position: relative;
+        opacity: 0;
+        transition: 1s all ease;
+      }
+
+      .reveal.active {
+        opacity: 1;
+      }
+
+      .reveal.fade-bottom {
+        transform: translateY(100px);
+      }
+
+      .reveal.fade-bottom.active {
+        transform: translateY(0);
+      }
+
+      .reveal.fade-left {
+        transform: translateX(-100px);
+      }
+
+      .reveal.fade-left.active {
+        transform: translateX(0);
+      }
+
+      .reveal.fade-right {
+        transform: translateX(100px);
+      }
+
+      .reveal.fade-right.active {
+        transform: translateX(0);
+      }
+    </style>
   </head>
   <body>
     <nav
@@ -178,7 +215,7 @@
       </div>
     </nav>
 
-    <div class="px-4 py-5 my-5 text-center hero-section">
+    <div class="px-4 py-5 my-5 text-center hero-section reveal fade-bottom">
       <div class="hero-content">
         <img
           class="d-block mx-auto mb-2"
@@ -262,7 +299,10 @@
     </div>
 
     <!-- tentang section -->
-    <section id="tentang">
+    <section
+      id="tentang"
+      class="reveal fade-left"
+    >
       <h1 class="display-5 fw-bold text-center">
         <span
           class="text-warning fw-bold"
@@ -314,100 +354,100 @@
         <!-- Skills Section -->
         <div class="skills-container">
           <div class="skill-timeline">
-            <!-- Frontend Development -->
+            <!-- Frontend -->
             <div class="skill-item">
               <h3
                 class="skill-title"
-                data-translate="skill_frontend"
+                data-translate="Frontend Development"
               >
                 Frontend Development
               </h3>
               <div class="skill-info">
                 <p
                   class="since"
-                  data-translate="skill_frontend_since"
+                  data-translate="Sejak 2020"
                 >
                   Sejak 2020
                 </p>
                 <span
                   class="skill-level"
-                  data-translate="skill_level_intermediate"
+                  data-translate="Intermediate"
                   >Intermediate</span
                 >
               </div>
               <p class="skill-tech">HTML, CSS, JavaScript</p>
             </div>
 
-            <!-- UI/UX Design -->
+            <!-- UI/UX -->
             <div class="skill-item">
               <h3
                 class="skill-title"
-                data-translate="skill_uiux"
+                data-translate="UI/UX Design"
               >
                 UI/UX Design
               </h3>
               <div class="skill-info">
                 <p
                   class="since"
-                  data-translate="skill_uiux_since"
+                  data-translate="Sejak 2023"
                 >
-                  Sejak 2024
+                  Sejak 2023
                 </p>
                 <span
                   class="skill-level"
-                  data-translate="skill_level_beginner"
+                  data-translate="Beginner"
                   >Beginner</span
                 >
               </div>
               <p class="skill-tech">Figma</p>
             </div>
 
-            <!-- AI Engineering -->
+            <!-- content creation -->
             <div class="skill-item">
               <h3
                 class="skill-title"
-                data-translate="skill_ai"
-              >
-                AI Engineering
-              </h3>
-              <div class="skill-info">
-                <p
-                  class="since"
-                  data-translate="skill_ai_since"
-                >
-                  Sejak 2025
-                </p>
-                <span
-                  class="skill-level"
-                  data-translate="skill_level_beginner"
-                  >Beginner</span
-                >
-              </div>
-              <p class="skill-tech">Python</p>
-            </div>
-
-            <!-- Content Creation -->
-            <div class="skill-item">
-              <h3
-                class="skill-title"
-                data-translate="skill_content"
+                data-translate="Content Creation"
               >
                 Content Creation
               </h3>
               <div class="skill-info">
                 <p
                   class="since"
-                  data-translate="skill_content_since"
+                  data-translate="Sejak 2024"
                 >
                   Sejak 2024
                 </p>
                 <span
                   class="skill-level"
-                  data-translate="skill_level_intermediate"
-                  >Intermediate</span
+                  data-translate="Beginner"
+                  >Beginner</span
                 >
               </div>
-              <p class="skill-tech">Capcut, Canva</p>
+              <p class="skill-tech">Capcut & Canva</p>
+            </div>
+
+            <!-- AI Engineering -->
+            <div class="skill-item">
+              <h3
+                class="skill-title"
+                data-translate="AI Engineering"
+              >
+                AI Engineering
+              </h3>
+              <div class="skill-info">
+                <p
+                  class="since"
+                  data-translate="Sejak 2025"
+                >
+                  Sejak 2025
+                </p>
+                <span
+                  class="skill-level"
+                  data-translate="Beginner"
+                  >Beginner</span
+                >
+              </div>
+              <p class="skill-tech">Python</p>
             </div>
           </div>
         </div>
@@ -418,32 +458,27 @@
             <div class="timeline-content">
               <div
                 class="timeline-date"
-                data-translate="timeline_date_smp"
+                data-translate="timeline_date_current"
               >
                 2023 - Sekarang
               </div>
               <h3
                 class="timeline-title"
-                data-translate="timeline_title_smp"
+                data-translate="timeline_school_smp"
               >
                 SMP Vianney
               </h3>
-              <p data-translate="timeline_desc_smp_1">Kelas 7 meraih juara 1 umum kelas dan meraih prestasi akademik cemerlang</p>
-              <p data-translate="timeline_desc_smp_2">Kelas 8 dengan fokus pada pengembangan skill programming dan akademik</p>
+              <p data-translate="timeline_desc_smp1">Kelas 7 meraih juara 1 umum kelas dan meraih prestasi akademik cemerlang</p>
+              <p data-translate="timeline_desc_smp2">Kelas 8 dengan fokus pada pengembangan skill programming dan akademik</p>
             </div>
           </div>
 
           <div class="timeline-item right">
             <div class="timeline-content">
-              <div
-                class="timeline-date"
-                data-translate="timeline_date_sd"
-              >
-                2017 - 2022
-              </div>
+              <div class="timeline-date">2017 - 2022</div>
               <h3
                 class="timeline-title"
-                data-translate="timeline_title_sd"
+                data-translate="timeline_school_sd"
               >
                 SD Vianney
               </h3>
@@ -456,7 +491,10 @@
     <!-- tentang end -->
 
     <!-- Proyek saya start -->
-    <section id="proyek">
+    <section
+      id="proyek"
+      class="reveal fade-right"
+    >
       <h1 class="display-5 fw-bold text-center">
         <span
           class="text-warning fw-bold"
@@ -496,7 +534,7 @@
         </a>
         <a
           target="_blank"
-          href="YOUR_LINK_HERE"
+          href=""
           class="card-link"
         >
           <div class="card">
@@ -606,7 +644,10 @@
     </section>
     <!-- Proyek saya end -->
     <!-- kontak section start -->
-    <section id="kontak">
+    <section
+      id="kontak"
+      class="reveal fade-bottom"
+    >
       <h1 class="display-5 fw-bold text-center">
         <span
           class="text-warning fw-bold"
@@ -649,7 +690,26 @@
       crossorigin="anonymous"
     ></script>
 
-    <!-- Add script tag before closing body tag -->
     <script src="script.js"></script>
+
+    <script>
+      function reveal() {
+        var reveals = document.querySelectorAll('.reveal');
+
+        reveals.forEach((reveal) => {
+          var windowHeight = window.innerHeight;
+          var elementTop = reveal.getBoundingClientRect().top;
+          var elementVisible = 150;
+
+          if (elementTop < windowHeight - elementVisible) {
+            reveal.classList.add('active');
+          }
+        });
+      }
+
+      window.addEventListener('scroll', reveal);
+      // To check the scroll position on page load
+      reveal();
+    </script>
   </body>
 </html>

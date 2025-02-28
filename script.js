@@ -46,3 +46,48 @@ document.addEventListener('DOMContentLoaded', () => {
   const savedLang = localStorage.getItem('selectedLanguage') || 'id';
   switchLanguage(savedLang);
 });
+
+// Fungsi untuk mengganti bahasa
+function changeLanguage(lang) {
+  const elements = document.querySelectorAll('[data-translate]');
+  elements.forEach((el) => {
+    const key = el.getAttribute('data-translate');
+    if (translations[lang] && translations[lang][key]) {
+      el.textContent = translations[lang][key];
+    }
+  });
+}
+
+// Tambahkan fungsi untuk menangani active state bahasa
+function setActiveLanguage(lang) {
+  document.querySelectorAll('[data-lang]').forEach((item) => {
+    if (item.getAttribute('data-lang') === lang) {
+      item.setAttribute('data-active', 'true');
+    } else {
+      item.setAttribute('data-active', 'false');
+    }
+  });
+}
+
+// Update event listener bahasa
+document.querySelectorAll('[data-lang]').forEach((langItem) => {
+  langItem.addEventListener('click', () => {
+    const lang = langItem.getAttribute('data-lang');
+    changeLanguage(lang);
+    setActiveLanguage(lang);
+  });
+});
+
+// Set bahasa default saat halaman dimuat
+setActiveLanguage('id');
+
+// Event listener untuk tombol bahasa
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('[data-lang]').forEach((btn) => {
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      const lang = this.getAttribute('data-lang');
+      changeLanguage(lang);
+    });
+  });
+});
