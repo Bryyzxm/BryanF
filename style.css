@@ -991,3 +991,33 @@ html {
   color: var(--primary-color) !important;
   font-weight: 600;
 }
+
+.nav-item.dropdown .dropdown-menu {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37) !important;
+  padding: 0.5rem !important;
+  margin-top: 0.5rem !important;
+  min-width: 10rem;
+}
+
+.nav-item.dropdown .dropdown-item {
+  color: #000 !important;
+  transition: all 0.3s ease;
+  border-radius: 5px;
+  padding: 0.5rem 1rem !important;
+  font-size: 0.9rem;
+}
+
+.nav-item.dropdown .dropdown-item:hover {
+  background: rgba(255, 212, 1, 0.8) !important;
+  transform: translateX(5px);
+}
+
+.nav-item.dropdown .dropdown-item.active,
+.nav-item.dropdown .dropdown-item[data-active='true'] {
+  background: var(--secondary-color) !important;
+  color: var(--primary-color) !important;
+  font-weight: 600;
+}
