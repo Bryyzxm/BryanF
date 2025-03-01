@@ -5,6 +5,12 @@
   --light-color: #f4f4f4;
 }
 
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 body {
   font-family: 'Poppins', sans-serif;
   font-size: 16px;
@@ -53,6 +59,31 @@ a {
 
 .navbar img {
   display: none;
+}
+
+.bounce.spin {
+  animation: bounce 0.6s ease-in-out 1s, spin 0.6s ease-in-out 2s;
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* From Uiverse.io by RiccardoRapelli */
@@ -1020,4 +1051,29 @@ html {
   background: var(--secondary-color) !important;
   color: var(--primary-color) !important;
   font-weight: 600;
+}
+
+::-webkit-scrollbar {
+  width: 1em;
+}
+
+::-webkit-scrollbar-track {
+  background: #0054c9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ffd401;
+}
+
+/* Navbar Mobile Styles */
+@media (max-width: 991.98px) {
+  .navbar-toggler {
+    display: block !important;
+    border: 2px solid #0054c9;
+    padding: 0.5rem;
+  }
+
+  .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 212, 1, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+  }
 }
